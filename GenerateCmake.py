@@ -2,6 +2,11 @@ import xml.etree.cElementTree as ET
 import sys
 import os.path
 
+def transformPlatform(platform):
+    if platform == "Win32":
+        return "x86"
+    return platform
+
 count = len(sys.argv)
 
 if count > 1:
@@ -19,6 +24,15 @@ patterns["project"] = splitpath[1].split(".")[0]
 tree = ET.ElementTree(file=filepath)
 root = tree.getroot()
 prefix = root.tag.replace("Project", "") # to avoid the xmlns schema
+
+print("Loading configurations")
+
+configs = root.iter(prefix + "ProjectConfiguration")
+for config in configs:
+    configuration = config.find(prefix + "Configuration").text
+    platforms = transformPlatform(config.find(prefix + "Platform").text)
+    print("Found configuration for " + configuration + " Platform: " + platforms)
+
 includes = root.iter(prefix + "ClInclude")
 compiles = root.iter(prefix + "ClCompile")
 
