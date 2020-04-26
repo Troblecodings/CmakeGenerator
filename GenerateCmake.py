@@ -30,7 +30,7 @@ print("Loading configurations")
 configs = root.iter(prefix + "ProjectConfiguration")
 for config in configs:
     configuration = config.find(prefix + "Configuration").text
-    platforms = transformPlatform(config.find(prefix + "Platform").text)
+    platforms = config.find(prefix + "Platform").text
     print("Found configuration for " + configuration + " Platform: " + platforms)
 
 includes = root.iter(prefix + "ClInclude")
